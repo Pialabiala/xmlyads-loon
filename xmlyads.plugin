@@ -1,0 +1,18 @@
+[Plugin]
+#!name=喜马拉雅去广告
+#!desc=清理首页信息流广告及漫剧、相声栏目入口
+#!author=Pialabiala
+#!homepage=https://github.com/Pialabiala/xmlyads-loon
+#!date=2026-10-31
+
+[Rule]
+# HAR 中的腾讯音乐广告素材投放接口
+URL-REGEX,^https?:\\/\\/tmeadkg\\.y\\.qq\\.com\\/maproxy\\/(getAd|getPbCompressAd)(?:\\?|$),REJECT
+
+[Script]
+http-response ^https?:\\/\\/mobile\\.ximalaya\\.com\\/discovery-feed\\/v4\\/mix\\/ script-path=https://raw.githubusercontent.com/Pialabiala/xmlyads-loon/main/xmly.js, requires-body=true, timeout=10, tag=XMLY_FeedAds
+http-response ^https?:\\/\\/mobile\\.ximalaya\\.com\\/discovery-category\\/customCategories\\/ script-path=https://raw.githubusercontent.com/Pialabiala/xmlyads-loon/main/xmly.js, requires-body=true, timeout=10, tag=XMLY_Categories
+http-response ^https?:\\/\\/adse(?:\\.wsa)?\\.ximalaya\\.com\\/adx\\/ad(?:\\?|$) script-path=https://raw.githubusercontent.com/Pialabiala/xmlyads-loon/main/xmly.js, requires-body=true, timeout=10, tag=XMLY_AdServer
+
+[MITM]
+hostname = mobile.ximalaya.com, adse.ximalaya.com, adse.wsa.ximalaya.com
